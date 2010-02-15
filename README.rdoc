@@ -1,26 +1,50 @@
-h2. Redmine Mail Configuration plugin
+== Redmine Mail Configuration plugin
 
 This plugin will add additional options to Redmine mailing system. All extended options concern issue creation, 
 or modification. Previous version of plugin added only mail sending restriction base on user preferences. 
 In new version additional options of sending are applyed to the object of MEMBER. Using combination of two it is possible, 
 to stop Redmine general mailing feature and use it only when wished.
 
-h2. Requiremnets
+== Requiremnets
 
 This plugin was tested on Redmine 0.9.2 on Windows Vista - Webrick, and Gentoo - Mongrel configuration.
 It should work on 0.8.x version but using 0.9.x is more advised
 
-h2. Install
+== Features
 
-Follow the Redmine [instructions](http://www.redmine.org/wiki/redmine/Plugins).
-You have to also run the patch file from redmine_mail_configurator/patch/
+=== User based mail configuration
+
+Plugin will add to Your Redmine 'My account' site two new checkboxes in 'Email notifications' area. 
+First option is "Mail me only if I'm assigned to issue" and second "I don't want to be notified by mail". 
+The second option overrides the fist one, so there's no need to select them both.
+
+=== Member based mail configuration
+
+This part of the plugin works in reverse to User preferences. In those options you can extend mailing scenarios based on issue modification, 
+or creation. The reason for this is that Member mailing options are overriding User preferences, so you can stop general mailing spam and 
+pinpoint only those situations when mailing is importand to you.
+Scenarions included in v.0.1.0:
+* New issue is created
+* Issue is assigned to choosen person or nobody
+* Use diffrent mailbox (if left blank the mailing will stop only for this project)
+Be advised that if the custom mial won't be valid (not accepted by Redmine validation) the whole mailing feature for project will fail.
+Use this feature with caution.
+
+=== Watchers mailing configuration
+
+Watchers mailing system stays untouched. No modifications made here. All watchers will receive mail on standart occasions,
+as long as their mailbox is correct.
+
+== Install
+
+1. Follow the Redmine http://www.redmine.org/wiki/redmine/Plugins.
+2. REMEMBER to change the name of the plugin folder to /redmine_mail_configurator (as it is registered in init.rb)
+3. You have to also run the patch file from redmine_mail_configurator/patch/
 It will add a hook to the Redmine 'My accout' page and two lines in project -> settings -> members table area.
 Please remember to backup you Redmine files (at least app/views/project/settings/_members.rhtml) and your database,
 so if you don't like the plugin  you can reverse easly.
 You can take a peek of the patch from here:
-<pre>
 
-<code>
 	Index: app/views/projects/settings/_members.rhtml
 	===================================================================
 	--- app/views/projects/settings/_members.rhtml	(wersja 401)
@@ -54,43 +78,13 @@ You can take a peek of the patch from here:
 	 
 	 <h3><%=l(:label_preferences)%></h3>
 
-</code>
 
-</pre>
+== Credits
+Thanks go to the following people for patches and contributions:
+Rjrodger - for language files fix
 
-h2. Features
-
-h3. User based mail configuration
-
-Plugin will add to Your Redmine 'My account' site two new checkboxes in 'Email notifications' area. 
-First option is "Mail me only if I'm assigned to issue" and second "I don't want to be notified by mail". 
-The second option overrides the fist one, so there's no need to select them both.
-
-h3. Member based mail configuration
-
-This part of the plugin works in reverse to User preferences. In those options you can extend mailing scenarios based on issue modification, 
-or creation. The reason for this is that Member mailing options are overriding User preferences, so you can stop general mailing spam and 
-pinpoint only those situations when mailing is importand to you.
-Scenarions included in v.0.1.0:
-*New issue is created
-*Issue is assigned to choosen person or nobody
-*Use diffrent mailbox (if left blank the mailing will stop only for this project)
-Be advised that if the custom mial won't be valid (not accepted by Redmine validation) the whole mailing feature for project will fail.
-Use this feature with caution.
-
-h3. Watchers mailing configuration
-
-Watchers mailing system stays untouched. No modifications made here. All watchers will receive mail on standart occasions,
-as long as their mailbox is correct.
-
-
-h2. License
-
+== License
 This plugin is licensed under the GNU GPL v2.  See COPYRIGHT.txt and GPL.txt for details.
 
 Authored by:
 GOYELLO.com
-
-h2. Credits
-Thanks go to the following people for patches and contributions:
-Rjrodger - for language files fix
