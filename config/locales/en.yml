@@ -1,3 +1,8 @@
 en:
-  label_user_mail_assigned_only_mail_notification: Mail me only if I'm assigned to issue.
+  label_user_mail_assigned_only_mail_notification: Mail me only if I'm assigned to issue 
   label_user_mail_block_mail_notification: I don't want to be notified by mail. Thank you.
+  label_mail_if: Mail if
+  label_new_issue_created: New issue is created
+  label_issue_assigned_to: "Issue is assigned to:"
+  label_no_assignation: No one
+  label_use_custom_mail: Use customa mail adress

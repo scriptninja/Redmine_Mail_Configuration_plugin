@@ -1,26 +1,32 @@
-Index: app/controllers/my_controller.rb
+Index: app/views/projects/settings/_members.rhtml
 ===================================================================
---- app/controllers/my_controller.rb	(wersja 2793)
-+++ app/controllers/my_controller.rb	(kopia robocza)
-@@ -58,6 +58,7 @@
-       @user.mail_notification = (params[:notification_option] == 'all')
-       @user.pref.attributes = params[:pref]
-       @user.pref[:no_self_notified] = (params[:no_self_notified] == '1')
-+	call_hook(:my_controller_new_user_preferences, { :params => params, :user_pref => @user.pref })
-       if @user.save
-         @user.pref.save
-         @user.notified_project_ids = (params[:notification_option] == 'selected' ? params[:notified_project_ids] : [])
+--- app/views/projects/settings/_members.rhtml	(wersja 401)
++++ app/views/projects/settings/_members.rhtml	(kopia robocza)
+@@ -9,6 +9,7 @@
+ 	  <th><%= l(:label_user) %> / <%= l(:label_group) %></th>
+ 	  <th><%= l(:label_role_plural) %></th>
+ 	  <th style="width:15%"></th>
++    <th><%= l(:label_mail_if)%></td>
+           <%= call_hook(:view_projects_settings_members_table_header, :project => @project) %>
+ 	</thead>
+ 	<tbody>
+@@ -40,6 +41,7 @@
+                                             }, :title => l(:button_delete),
+                                                :class => 'icon icon-del') if member.deletable? %>
+   </td>
++  <%= render :partial => "mail_configurator/mail_if", :locals => {:members => members, :member => member, :project => @project}, :layout => false %>
+   <%= call_hook(:view_projects_settings_members_table_row, { :project => @project, :member => member}) %>
+ 	</tr>
+ 	</tbody>
 Index: app/views/my/account.rhtml
 ===================================================================
---- app/views/my/account.rhtml	(wersja 2793)
+--- app/views/my/account.rhtml	(wersja 401)
 +++ app/views/my/account.rhtml	(kopia robocza)
-@@ -40,6 +40,9 @@
+@@ -41,6 +41,7 @@
  <p><em><%= l(:text_user_mail_option) %></em></p>
  <% end %>
  <p><label><%= check_box_tag 'no_self_notified', 1, @user.pref[:no_self_notified] %> <%= l(:label_user_mail_no_self_notified) %></label></p>
-+
-+	<%= call_hook(:mail_configurator_options, { :user_pref => @user.pref }) %>	
-+
++<%= call_hook(:mail_configurator_options, { :user_pref => @user.pref }) %>	
  </div>
  
  <h3><%=l(:label_preferences)%></h3>

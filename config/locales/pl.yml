@@ -1,3 +1,8 @@
 pl:
   label_user_mail_assigned_only_mail_notification: "Tylko gdy jestem przypisany-a."
   label_user_mail_block_mail_notification: "Nie powiadamiaj przez maila."
+  label_mail_if: Wyślij maila jeśli
+  label_new_issue_created: Stworzono nowe zagadnienie
+  label_issue_assigned_to: "Zagadnienie jest przypisane do:"
+  label_no_assignation: Nikogo
+  label_use_custom_mail: Użyj innego adresu poczty

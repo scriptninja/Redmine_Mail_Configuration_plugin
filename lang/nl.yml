@@ -1,4 +1,8 @@
-nl:
-  label_user_mail_assigned_only_mail_notification: stuur mij een e-mail alleen in het geval dat een issue aan mij is gericht.
+  label_user_mail_assigned_only_mail_notification: Stuur mij een e-mail alleen in het geval dat een issue aan mij is gericht.
   label_user_mail_block_mail_notification:  Ik wil geen e-mail berichten ontvangen.
+  label_mail_if: Mali als
+  label_new_issue_created: Nieuw taak wordt gecreëerd
+  label_issue_assigned_to: "Taak is toegewezen aan:"
+  label_no_assignation: Niemand
+  label_use_custom_mail: Gebruik customa mail adres
 
