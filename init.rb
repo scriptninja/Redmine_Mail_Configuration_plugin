@@ -18,5 +18,5 @@ Redmine::Plugin.register :redmine_mail_configurator do
   name 'Redmine Mail Configurator plugin'
   author 'Marek Kreft'
   description 'This plugin adds new options (restrictions) to prevent sending mails if not needed'
-  version '0.0.1'
+  version '0.0.2'
 end
