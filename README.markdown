@@ -1,38 +1,96 @@
-## Redmine Mail Configuration plugin
+h2. Redmine Mail Configuration plugin
 
-The Mail Configuration plugin will add to Your Redmine 'My account' site two new checkboxes in 'Email notifications' area. 
-First option will allow sending mail notification only if user is assigned to the issue. Second will block sending mail completly.
+This plugin will add additional options to Redmine mailing system. All extended options concern issue creation, 
+or modification. Previous version of plugin added only mail sending restriction base on user preferences. 
+In new version additional options of sending are applyed to the object of MEMBER. Using combination of two it is possible, 
+to stop Redmine general mailing feature and use it only when wished.
 
-## Getting the plugin
+h2. Requiremnets
 
-## Install
+This plugin was tested on Redmine 0.9.2 on Windows Vista - Webrick, and Gentoo - Mongrel configuration.
+It should work on 0.8.x version but using 0.9.x is more advised
 
-This plugin needs to be installed same as the Redmine instruction for plugins describes (http://www.redmine.org/wiki/1/Plugins).
-You can skip 'rake' command as there are no database migration files.
-You have to also run the patch file from redmine_mail_configurator\patch\
-It will only add two hooks in your source code, so the changes are insignificant, but still you should BACKUP Your Files.
+h2. Install
 
-## Features
+Follow the Redmine [instructions](http://www.redmine.org/wiki/redmine/Plugins).
+You have to also run the patch file from redmine_mail_configurator/patch/
+It will add a hook to the Redmine 'My accout' page and two lines in project -> settings -> members table area.
+Please remember to backup you Redmine files (at least app/views/project/settings/_members.rhtml) and your database,
+so if you don't like the plugin  you can reverse easly.
+You can take a peek of the patch from here:
+<pre>
 
-The Mail Configuration plugin will add to Your Redmine 'My account' site two new checkboxes in 'Email notifications' area. 
-First option will allow sending mail notification only if user is assigned to the issue. Second will block sending mail completly.
+<code>
+	Index: app/views/projects/settings/_members.rhtml
+	===================================================================
+	--- app/views/projects/settings/_members.rhtml	(wersja 401)
+	+++ app/views/projects/settings/_members.rhtml	(kopia robocza)
+	@@ -9,6 +9,7 @@
+		  <th><%= l(:label_user) %> / <%= l(:label_group) %></th>
+		  <th><%= l(:label_role_plural) %></th>
+		  <th style="width:15%"></th>
+	+    <th><%= l(:label_mail_if)%></td>
+			   <%= call_hook(:view_projects_settings_members_table_header, :project => @project) %>
+		</thead>
+		<tbody>
+	@@ -40,6 +41,7 @@
+												 }, :title => l(:button_delete),
+													:class => 'icon icon-del') if member.deletable? %>
+	   </td>
+	+  <%= render :partial => "mail_configurator/mail_if", :locals => {:members => members, :member => member, :project => @project}, :layout => false %>
+	   <%= call_hook(:view_projects_settings_members_table_row, { :project => @project, :member => member}) %>
+		</tr>
+		</tbody>
+	Index: app/views/my/account.rhtml
+	===================================================================
+	--- app/views/my/account.rhtml	(wersja 401)
+	+++ app/views/my/account.rhtml	(kopia robocza)
+	@@ -41,6 +41,7 @@
+	 <p><em><%= l(:text_user_mail_option) %></em></p>
+	 <% end %>
+	 <p><label><%= check_box_tag 'no_self_notified', 1, @user.pref[:no_self_notified] %> <%= l(:label_user_mail_no_self_notified) %></label></p>
+	+<%= call_hook(:mail_configurator_options, { :user_pref => @user.pref }) %>	
+	 </div>
+	 
+	 <h3><%=l(:label_preferences)%></h3>
 
-Changes made by patch:
+</code>
 
-<redmine root>\app\controllers\my_controller.rb
+</pre>
 
-#####@user.pref[:no_self_notified] = (params[:no_self_notified] == '1')
+h2. Features
 
-####++ call_hook(:my_controller_new_user_preferences, { :params => params, :user_pref => @user.pref })
+h3. User based mail configuration
 
-#####if @user.save
+Plugin will add to Your Redmine 'My account' site two new checkboxes in 'Email notifications' area. 
+First option is "Mail me only if I'm assigned to issue" and second "I don't want to be notified by mail". 
+The second option overrides the fist one, so there's no need to select them both.
+
+h3. Member based mail configuration
+
+This part of the plugin works in reverse to User preferences. In those options you can extend mailing scenarios based on issue modification, 
+or creation. The reason for this is that Member mailing options are overriding User preferences, so you can stop general mailing spam and 
+pinpoint only those situations when mailing is importand to you.
+Scenarions included in v.0.1.0:
+*New issue is created
+*Issue is assigned to choosen person or nobody
+*Use diffrent mailbox (if left blank the mailing will stop only for this project)
+Be advised that if the custom mial won't be valid (not accepted by Redmine validation) the whole mailing feature for project will fail.
+Use this feature with caution.
+
+h3. Watchers mailing configuration
+
+Watchers mailing system stays untouched. No modifications made here. All watchers will receive mail on standart occasions,
+as long as their mailbox is correct.
 
 
-<redmine root>\app\views\my\account.rhtml
+h2. License
 
-#####<p><label><%= check_box_tag 'no_self_notified', 1, @user.pref[:no_self_notified] %> <%= l(:label_user_mail_no_self_notified) %></label></p>
+This plugin is licensed under the GNU GPL v2.  See COPYRIGHT.txt and GPL.txt for details.
 
-####++<%= call_hook(:mail_configurator_options, { :user_pref => @user.pref }) %>
+Authored by:
+GOYELLO.com
 
-#####</div>
-
+h2. Credits
+Thanks go to the following people for patches and contributions:
+Rjrodger - for language files fix
