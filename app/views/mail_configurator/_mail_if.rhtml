@@ -1,4 +1,3 @@
-
     <td class="email_options">
     <% if authorize_for('members', 'edit') and (member.principal.type != "Group") %>
          <% remote_form_for(:member, member, :url => {:controller => 'member_preferences', :action => 'edit', :id => member},
@@ -8,12 +7,12 @@
              <%= check_box_tag "for_new_issue_created_#{member.id}", 1, member.pref[:notify_when_new_issue_created] %> <%=l(:label_new_issue_created)%>
           </div>
           <div id="assigned_to_notification">
-            <%= check_box_tag "issue_assigned_to_#{member.id}", 1, member.pref[:assigned_notification], :onclick => "if ($('issue_assigned_to_#{member.id}').checked == true) {$('assinged_to_options_#{member.id}').show();} else {$('assinged_to_options_#{member.id}').hide();}" %> <%=l(:label_issue_assigned_to)%>
-            <% content_tag 'div', :id => "assinged_to_options_#{member.id}", :style => (member.pref[:assigned_notification] == '1' ? 'height:65px; width:230px; overflow-x: hidden; overflow-y: visible; border:1px solid #BBBBBB' : 'display:none; height:65px; width:230px; overflow-x: hidden; overflow-y: visible; border:1px solid #BBBBBB') do %>
+            <%= check_box_tag "issue_assigned_to_#{member.id}", 1, member.pref[:assigned_notification], :onclick => "if ($('issue_assigned_to_#{member.id}').checked == true) {$('assigned_to_options_#{member.id}').show();} else {$('assigned_to_options_#{member.id}').hide();}" %> <%=l(:label_issue_assigned_to)%>
+            <% content_tag 'div', :id => "assigned_to_options_#{member.id}", :style => (member.pref[:assigned_notification] == '1' ? 'height:65px; width:230px; overflow-x: hidden; overflow-y: visible; border:1px solid #BBBBBB' : 'display:none; height:65px; width:230px; overflow-x: hidden; overflow-y: visible; border:1px solid #BBBBBB') do %>
               <label><%= check_box_tag "notified_when_members_ids[]", "none", member.notify_when_member_id.include?('none') %> <%= l(:label_no_assignation) %>  </label>
               <% members.each do |assigned_member| %>
                 <%if assigned_member.principal.type != "Group" %>
-                  <label style ="display: block; width:100%;"><%= check_box_tag 'notified_when_members_ids[]', assigned_member.id, member.notify_when_member_id.include?(assigned_member.id.to_s) %> <%= assigned_member.user.name %></label>
+                  <label style ="display: block; width:100%;"><%= check_box_tag 'notified_when_members_ids[]', assigned_member.id, member.notify_when_member_id.include?(assigned_member.id.to_s) %> <%= assigned_member.principal %></label>
                 <%  end %>
               <% end %>
             <%end%>
